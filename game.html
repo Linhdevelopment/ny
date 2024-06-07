@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,12 +12,14 @@
             border: 2px solid #ff69b4;
             overflow: hidden;
             background-color: #f0f8ff;
+            margin: 20px auto;
+            max-width: 600px;
         }
-        #heart {
+        .heart {
             position: absolute;
             width: 50px;
             height: 50px;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Love_Heart_symbol.svg/2048px-Love_Heart_symbol.svg.png');
+            background-image: url('https://taoanhdep.com/wp-content/uploads/2022/08/ten-trai-tim.jpeg');
             background-size: cover;
             cursor: pointer;
         }
@@ -29,31 +30,49 @@
     <h1>Chơi Bắt Tim</h1>
 </header>
 <main>
-    <p>Bắt lấy trái tim di chuyển để giành chiến thắng!</p>
-    <div id="gameContainer">
-        <div id="heart" onclick="catchHeart()"></div>
-    </div>
+    <p>Bắt lấy các trái tim di chuyển để giành chiến thắng!</p>
+    <div id="gameContainer"></div>
     <p id="message"></p>
     <a href="index.html">Quay lại trang chủ</a>
 </main>
 <script>
-    let heart = document.getElementById('heart');
-    let gameContainer = document.getElementById('gameContainer');
-    let message = document.getElementById('message');
+    const gameContainer = document.getElementById('gameContainer');
+    const message       = document.getElementById('message');
+    const numHearts     = 5;
+    const hearts        = [];
 
-    function moveHeart() {
-        let x = Math.floor(Math.random() * (gameContainer.clientWidth - heart.clientWidth));
-        let y = Math.floor(Math.random() * (gameContainer.clientHeight - heart.clientHeight));
-        heart.style.left = x + 'px';
-        heart.style.top = y + 'px';
+    function createHeart () {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = `${Math.random() * (gameContainer.clientWidth - 50)}px`;
+        heart.style.top  = `${Math.random() * (gameContainer.clientHeight - 50)}px`;
+        heart.addEventListener('click', catchHeart);
+        gameContainer.appendChild(heart);
+        hearts.push(heart);
+        return heart;
     }
 
-    function catchHeart() {
-        message.innerText = "Chúc mừng! Bạn đã bắt được trái tim!";
-        clearInterval(heartMovement);
+    function moveHeart (heart) {
+        heart.style.left = `${Math.random() * (gameContainer.clientWidth - 50)}px`;
+        heart.style.top  = `${Math.random() * (gameContainer.clientHeight - 50)}px`;
     }
 
-    let heartMovement = setInterval(moveHeart, 1000);
+    function catchHeart (event) {
+        event.target.remove();
+        hearts.splice(hearts.indexOf(event.target), 1);
+        if (hearts.length === 0) {
+            message.innerText = "Chúc mừng! Bạn đã bắt được tất cả các trái tim!";
+            clearInterval(heartMovement);
+        }
+    }
+
+    for (let i = 0; i < numHearts; i++){
+        createHeart();
+    }
+
+    const heartMovement = setInterval(() => {
+        hearts.forEach(moveHeart);
+    }, 1000);
 </script>
 </body>
 </html>
