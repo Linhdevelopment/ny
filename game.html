@@ -5,21 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trò chơi</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        #gameContainer {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border: 2px solid #ff69b4;
+            overflow: hidden;
+            background-color: #f0f8ff;
+        }
+        #heart {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Love_Heart_symbol.svg/2048px-Love_Heart_symbol.svg.png');
+            background-size: cover;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <header>
-    <h1>Trò chơi</h1>
+    <h1>Chơi Bắt Tim</h1>
 </header>
 <main>
-    <p>Chơi một trò chơi đơn giản để thư giãn!</p>
-    <button onclick="playGame()">Bắt đầu chơi</button>
-    <div id="game"></div>
+    <p>Bắt lấy trái tim di chuyển để giành chiến thắng!</p>
+    <div id="gameContainer">
+        <div id="heart" onclick="catchHeart()"></div>
+    </div>
+    <p id="message"></p>
     <a href="index.html">Quay lại trang chủ</a>
 </main>
 <script>
-    function playGame() {
-        document.getElementById('game').innerText = "Chúc mừng! Em đã thắng!";
+    let heart = document.getElementById('heart');
+    let gameContainer = document.getElementById('gameContainer');
+    let message = document.getElementById('message');
+
+    function moveHeart() {
+        let x = Math.floor(Math.random() * (gameContainer.clientWidth - heart.clientWidth));
+        let y = Math.floor(Math.random() * (gameContainer.clientHeight - heart.clientHeight));
+        heart.style.left = x + 'px';
+        heart.style.top = y + 'px';
     }
+
+    function catchHeart() {
+        message.innerText = "Chúc mừng! Bạn đã bắt được trái tim!";
+        clearInterval(heartMovement);
+    }
+
+    let heartMovement = setInterval(moveHeart, 1000);
 </script>
 </body>
 </html>
